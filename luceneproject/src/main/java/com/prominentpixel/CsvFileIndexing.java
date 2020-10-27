@@ -21,8 +21,6 @@ import java.util.Scanner;
 
 public class CsvFileIndexing {
     public static void main(String[] args) throws IOException, ParseException {
-
-        //Todo; You can pass this path as command line argument so the user will pass at run time and he will be able to specify at run time.
         Scanner scanner=new Scanner(System.in);
         System.out.print("Enter a Properties File Path=");
         String filePath=scanner.next();
@@ -31,14 +29,14 @@ public class CsvFileIndexing {
         properties.load(reader);
 
         System.out.print("Properties File Index Path key=");
-        String indexKey=scanner.next();
-        Directory fsDirectory= FSDirectory.open(Paths.get(properties.getProperty(indexKey)));
+        String INDEX_FILEKEY_PATH=scanner.next();
+        Directory fsDirectory= FSDirectory.open(Paths.get(properties.getProperty(INDEX_FILEKEY_PATH)));
 
         IndexWriterConfig config=new IndexWriterConfig(new StandardAnalyzer());
         IndexWriter writer=new IndexWriter(fsDirectory,config);
         System.out.print("Properties Csv File Path Key=");
-        String csvkey=scanner.next();
-        List<String> fileLines= Files.readAllLines(Paths.get(properties.getProperty(csvkey)));
+        String CSV_FILEKEY_PATH=scanner.next();
+        List<String> fileLines= Files.readAllLines(Paths.get(properties.getProperty(CSV_FILEKEY_PATH)));
 
 
         SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yy");
@@ -60,6 +58,7 @@ public class CsvFileIndexing {
                 e.printStackTrace();
             }
         }
+        scanner.close();
         writer.commit();
         writer.close();
     }
