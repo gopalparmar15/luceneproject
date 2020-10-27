@@ -1,5 +1,4 @@
 package com.prominentpixel;
-
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -8,7 +7,6 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,20 +21,20 @@ public class CsvFileIndexing {
     public static void main(String[] args) throws IOException, ParseException {
         Scanner scanner=new Scanner(System.in);
         System.out.print("Enter a Properties File Path=");
-        String PROPERTIES_FILE_PATH=scanner.next();
-        FileReader reader=new FileReader(PROPERTIES_FILE_PATH);
+        String propertiesFilesPath=scanner.next();
+        FileReader reader=new FileReader(propertiesFilesPath);
         Properties properties=new Properties();
         properties.load(reader);
 
         System.out.print("Properties File Index Path key=");
-        String INDEX_FILEKEY_PATH=scanner.next();
-        Directory fsDirectory= FSDirectory.open(Paths.get(properties.getProperty(INDEX_FILEKEY_PATH)));
+        String indexPath=scanner.next();
+        Directory fsDirectory= FSDirectory.open(Paths.get(properties.getProperty(indexPath)));
 
         IndexWriterConfig config=new IndexWriterConfig(new StandardAnalyzer());
         IndexWriter writer=new IndexWriter(fsDirectory,config);
         System.out.print("Properties Csv File Path Key=");
-        String CSV_FILEKEY_PATH=scanner.next();
-        List<String> fileLines= Files.readAllLines(Paths.get(properties.getProperty(CSV_FILEKEY_PATH)));
+        String csvFilePath=scanner.next();
+        List<String> fileLines= Files.readAllLines(Paths.get(properties.getProperty(csvFilePath)));
 
 
         SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yy");
