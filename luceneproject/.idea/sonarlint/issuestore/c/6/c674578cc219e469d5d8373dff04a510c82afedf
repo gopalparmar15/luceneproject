@@ -1,0 +1,15 @@
+
+V	java:S125""<This block of commented-out lines of code should be removed.(‡¾ÞØùÿÿÿÿ
+S	java:S106$"9Replace this use of System.out or System.err by a logger.(àÂ²¨üÿÿÿÿ
+f	java:S117."QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÉÔœÝ
+T
+java:S1854!">Remove this useless assignment to local variable "dateFormat".(¼áÜ•
+Œ
+java:S1130"qRemove the declaration of thrown exception 'java.text.ParseException', as it cannot be thrown from method's body.( äöÛùÿÿÿÿ
+f	java:S117."QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÉÔœÝ
+d
+java:S2095"IUse try-with-resources or close this "FSDirectory" in a "finally" clause.(ˆ±„õøÿÿÿÿ
+E
+java:S1481!"/Remove this unused "dateFormat" local variable.(¼áÜ•
+d
+java:S2095"IUse try-with-resources or close this "IndexWriter" in a "finally" clause.(³¶ìúùÿÿÿÿ

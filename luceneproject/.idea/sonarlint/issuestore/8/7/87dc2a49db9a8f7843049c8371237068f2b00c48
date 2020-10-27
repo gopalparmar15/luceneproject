@@ -1,0 +1,15 @@
+
+d
+java:S2095"IUse try-with-resources or close this "FSDirectory" in a "finally" clause.(æ½¶±øÿÿÿÿ
+Y
+java:S1854">Remove this useless assignment to local variable "dateFormat".(é¥˜Åøÿÿÿÿ
+d
+java:S2095"IUse try-with-resources or close this "IndexWriter" in a "finally" clause.(‹Ù¯Ëøÿÿÿÿ
+“
+java:S1130"qRemove the declaration of thrown exception 'java.text.ParseException', as it cannot be thrown from method's body.( äöÛùÿÿÿÿ8éÍİ¨Ö.
+H
+java:S1135"2Complete the task associated to this TODO comment.(­–Ê
+J
+java:S1481"/Remove this unused "dateFormat" local variable.(é¥˜Åøÿÿÿÿ
+M
+java:S1135"2Complete the task associated to this TODO comment.(é¥˜Åøÿÿÿÿ
