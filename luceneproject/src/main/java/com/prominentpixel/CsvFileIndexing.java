@@ -23,8 +23,8 @@ public class CsvFileIndexing {
     public static void main(String[] args) throws IOException, ParseException {
         Scanner scanner=new Scanner(System.in);
         System.out.print("Enter a Properties File Path=");
-        String filePath=scanner.next();
-        FileReader reader=new FileReader(filePath);
+        String PROPERTIES_FILE_PATH=scanner.next();
+        FileReader reader=new FileReader(PROPERTIES_FILE_PATH);
         Properties properties=new Properties();
         properties.load(reader);
 
