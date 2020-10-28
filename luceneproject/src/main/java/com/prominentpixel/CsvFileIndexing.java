@@ -3,11 +3,11 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,15 +28,12 @@ public class CsvFileIndexing {
         Properties properties=new Properties();
         properties.load(reader);
 
-        System.out.print("Properties File Index Path key=");
-        String indexPath=scanner.next();
-        Directory fsDirectory= FSDirectory.open(Paths.get(properties.getProperty(indexPath)));
+
+        Directory fsDirectory= FSDirectory.open(Paths.get(properties.getProperty("INDEX_PATH")));
 
         IndexWriterConfig config=new IndexWriterConfig(new StandardAnalyzer());
         IndexWriter writer=new IndexWriter(fsDirectory,config);
-        System.out.print("Properties Csv File Path Key=");
-        String csvFilePath=scanner.next();
-        File file=new File(properties.getProperty(csvFilePath));
+        File file=new File(properties.getProperty("CSV_PATH"));
         String[] list=file.list();
         for (String fileName:list)
         {
@@ -51,9 +48,9 @@ public class CsvFileIndexing {
                 try {
                     Document document=new Document();
                     int dataIndex = 0;
-                    for(String header : headers){
-                       document.add(new StringField(header, data[dataIndex++], Field.Store.YES));
-                        /*System.out.print(header+"="+data[dataIndex++]+"=")*/;
+                    for(String header : headers)
+                    {
+                       document.add(new TextField(header, data[dataIndex++], Field.Store.YES));
                     }
                     writer.addDocument(document);
                 }
@@ -62,7 +59,6 @@ public class CsvFileIndexing {
                 }
             }
         }
-
         scanner.close();
         writer.commit();
         writer.close();
