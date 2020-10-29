@@ -36,11 +36,12 @@ public class CsvFileIndexing {
         IndexWriterConfig config=new IndexWriterConfig(new StandardAnalyzer());
         IndexWriter writer=new IndexWriter(fsDirectory,config);
         File file=new File(properties.getProperty("CSV_PATH"));
-        String[] list=file.list();
-        for (String fileName:list)
+        File[] list=file.listFiles();
+        for (File fileName:list)
         {
-            List<String> fileLines= Files.readAllLines(Paths.get(file+"/"+fileName));
-            SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yy");
+            String filename=fileName.getAbsolutePath();
+             List<String> fileLines= Files.readAllLines(Paths.get(filename));
+            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-mm-dd");
             //Take Header String here it will always be at the 0th Index.
             String headerLine = fileLines.get(0);
             String[] headers = headerLine.split(",");
@@ -50,9 +51,13 @@ public class CsvFileIndexing {
                 try {
                     Document document=new Document();
                     int dataIndex = 0;
+                   /* String date=data[0];
+                    String dates=dateFormat.format(date);*/
+
                     for(String header : headers)
                     {
                        document.add(new TextField(header, data[dataIndex++], Field.Store.YES));
+
                     }
                     writer.addDocument(document);
                 }
