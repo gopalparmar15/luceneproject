@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
@@ -29,36 +30,52 @@ public class CsvFileIndexing {
         FileReader reader=new FileReader(propertiesFilesPath);
         Properties properties=new Properties();
         properties.load(reader);
-
-
         Directory fsDirectory= FSDirectory.open(Paths.get(properties.getProperty("INDEX_PATH")));
 
         IndexWriterConfig config=new IndexWriterConfig(new StandardAnalyzer());
         IndexWriter writer=new IndexWriter(fsDirectory,config);
         File file=new File(properties.getProperty("CSV_PATH"));
+
         File[] list=file.listFiles();
         for (File fileName:list)
         {
-            String filename=fileName.getAbsolutePath();
+             String filename=fileName.getAbsolutePath();
              List<String> fileLines= Files.readAllLines(Paths.get(filename));
-            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-mm-dd");
+             SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy");
             //Take Header String here it will always be at the 0th Index.
             String headerLine = fileLines.get(0);
             String[] headers = headerLine.split(",");
+            String value=headers[0];
+
+            fileLines.remove(0);
+
             for (String line:fileLines)
             {
                 String[] data=line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)",-1);
                 try {
                     Document document=new Document();
-                    int dataIndex = 0;
-                   /* String date=data[0];
-                    String dates=dateFormat.format(date);*/
-
+                    int dataIndex =0;
+                   String date=data[dataIndex];
+                   Date dates=dateFormat.parse(date);
                     for(String header : headers)
                     {
-                       document.add(new TextField(header, data[dataIndex++], Field.Store.YES));
+                        if(header==value)
+                        {
+                            try {
+                                document.add(new StringField(header, String.valueOf(dates), Field.Store.YES));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            dataIndex++;
+                        }
+                        else
+                            {
+                                document.add(new TextField(header, data[dataIndex++], Field.Store.YES));
+                            }
 
                     }
+                    System.out.println(document);
                     writer.addDocument(document);
                 }
                 catch (IOException e) {
