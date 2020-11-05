@@ -6,8 +6,8 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.*;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import java.io.File;
@@ -63,7 +63,8 @@ public class CsvFileIndexing {
                         {
                             try {
                                 document.add(new StringField(header, String.valueOf(dates), Field.Store.YES));
-                            } catch (Exception e) {
+                            }
+                            catch (Exception e) {
                                 e.printStackTrace();
                             }
 
@@ -73,18 +74,39 @@ public class CsvFileIndexing {
                             {
                                 document.add(new TextField(header, data[dataIndex++], Field.Store.YES));
                             }
-
                     }
-                    System.out.println(document);
+
                     writer.addDocument(document);
+
                 }
                 catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        scanner.close();
-        writer.commit();
         writer.close();
+
+        System.out.println("Enter a column name=");
+        String column=scanner.next();
+        System.out.println("enter search value=");
+        String searchValue=scanner.next();
+        Term term=new Term(column,searchValue);
+        Query query=new TermQuery(term);
+
+        IndexReader indexReader = DirectoryReader.open(fsDirectory);
+        IndexSearcher searcher=new IndexSearcher(indexReader);
+        TopDocs topDocs=searcher.search(query,100);
+        ScoreDoc[] scoreDocs=topDocs.scoreDocs;
+        for (int i=0;i<scoreDocs.length;i++)
+        {
+            int docId=scoreDocs[i].doc;
+
+            Document documents=searcher.doc(docId);
+            System.out.println(documents.get(column));
+        }
+        indexReader.close();
+
+        scanner.close();
+
     }
 }
